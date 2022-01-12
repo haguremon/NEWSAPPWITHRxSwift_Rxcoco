@@ -3,7 +3,7 @@
 //  NEWSAPPWITHRxSwift_Rxcoco
 //
 //  Created by IwasakIYuta on 2022/01/11.
-//
+//test
 
 import UIKit
 import RxSwift
