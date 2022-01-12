@@ -22,25 +22,16 @@ class NewsTableViewController: UITableViewController {
     }
     
     private func populateNews() {
-        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=jp&apiKey=\(apikey)")!
-        //urlを観察可能なObservable<Data>に変更する
-        Observable.just(url)
-            .flatMap { url -> Observable<Data> in
-                let request = URLRequest(url: url)
-                return URLSession.shared.rx.data(request: request)
-            //mapを使って全ての要素を[Article]?に変更
-            }.map { data -> [Article]? in
-                return try? JSONDecoder().decode(ArticlesList.self, from: data).articles
-            }.subscribe(onNext: { [weak self] articles in
-                
-                if let articles = articles {
-                    self?.articles = articles
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                    }
+        
+        URLRequest.load(resource: ArticlesList.all)    .subscribe(onNext: { [weak self] result in
+            if let result = result {
+                self?.articles = result.articles
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
                 }
-                
-            }).disposed(by: disposeBag)
+            }
+        }).disposed(by: disposeBag)
+        
     }
 
     // MARK: - Table view data source

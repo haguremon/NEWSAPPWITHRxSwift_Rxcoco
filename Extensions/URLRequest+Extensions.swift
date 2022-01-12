@@ -14,7 +14,7 @@ struct Resource<T: Decodable> {
 }
 
 extension URLRequest {
-    
+    //Observable<T?>を返してサブスクできるようにする
     static func load<T>(resource: Resource<T>) -> Observable<T?> {
         
         return Observable.from([resource.url])
